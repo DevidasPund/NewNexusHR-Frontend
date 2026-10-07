@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   NexusHR theme tokens — ZIDIO-inspired dark indigo / violet.
+   Dark is default; [data-theme="light"] overrides surfaces + ink.
+   [data-accent] swaps the accent hue live.
+   ============================================================ */
+:root,
+[data-theme='dark'] {
+  --bg: #0b0a14;
+  --elevated: #14122a;
+  --card: #191634;
+  --card-hover: #1f1b40;
+  --border: #262244;
+  --border-strong: #332c5c;
+  --ink: #eceafb;
+  --muted: #9a94c4;
+  --faint: #6f699a;
+
+  --success: #34d399;
+  --warn: #f5b544;
+  --info: #4aa3ff;
+  --danger: #f43f6e;
+
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --bg: #f4f3fb;
+  --elevated: #ffffff;
+  --card: #ffffff;
+  --card-hover: #f7f6ff;
+  --border: #e4e1f4;
+  --border-strong: #d2cdec;
+  --ink: #1b1836;
+  --muted: #5c567e;
+  --faint: #8a84ad;
+
+  --success: #0f9d68;
+  --warn: #c98a12;
+  --info: #2f7fe0;
+  --danger: #d92c57;
+
+  color-scheme: light;
+}
+
+/* ---- accent swatches (default violet) ---- */
+:root,
+[data-accent='violet'] {
+  --accent: #7c6cf0;
+  --accent-strong: #6366f1;
+  --accent-soft: rgba(124, 108, 240, 0.16);
+  --accent-contrast: #ffffff;
+}
+[data-accent='green'] {
+  --accent: #34d399;
+  --accent-strong: #10b981;
+  --accent-soft: rgba(52, 211, 153, 0.16);
+  --accent-contrast: #04231a;
+}
+[data-accent='blue'] {
+  --accent: #4aa3ff;
+  --accent-strong: #2f7fe0;
+  --accent-soft: rgba(74, 163, 255, 0.16);
+  --accent-contrast: #04203f;
+}
+[data-accent='amber'] {
+  --accent: #f5b544;
+  --accent-strong: #e09a1f;
+  --accent-soft: rgba(245, 181, 68, 0.16);
+  --accent-contrast: #2a1e02;
+}
+[data-accent='pink'] {
+  --accent: #f472b6;
+  --accent-strong: #e14b9a;
+  --accent-soft: rgba(244, 114, 182, 0.16);
+  --accent-contrast: #2e0a1e;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Subtle radial glow behind the app, like the reference. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 12% -10%, var(--accent-soft), transparent 60%),
+    radial-gradient(50rem 40rem at 100% 0%, rgba(99, 102, 241, 0.1), transparent 55%);
+  z-index: 0;
+}
+
+/* ---- reusable primitives ---- */
+@layer components {
+  .mono-label {
+    @apply font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-faint;
+  }
+  .card {
+    @apply rounded-2xl border bg-card shadow-card;
+    border-color: var(--border);
+  }
+  .card-pad {
+    @apply p-5;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+    color: var(--accent-contrast);
+    @apply shadow-glow hover:brightness-110;
+  }
+  .btn-ghost {
+    @apply border bg-transparent text-ink hover:bg-card-hover;
+    border-color: var(--border-strong);
+  }
+  .input {
+    @apply w-full rounded-xl border bg-elevated px-3.5 py-2.5 text-sm text-ink outline-none
+           placeholder:text-faint focus:border-transparent;
+    border-color: var(--border-strong);
+  }
+  .input:focus {
+    box-shadow: 0 0 0 2px var(--accent-soft);
+  }
+  .nav-link {
+    @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted transition;
+  }
+  .nav-link:hover {
+    @apply bg-card-hover text-ink;
+  }
+  .nav-link-active {
+    color: var(--accent-contrast);
+    background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+    @apply shadow-glow;
+  }
+}
+
+/* Recharts: make axis + grid recede, tooltip match theme. */
+.recharts-cartesian-grid line {
+  stroke: var(--border);
+}
+.recharts-text {
+  fill: var(--muted);
+}
+.custom-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
